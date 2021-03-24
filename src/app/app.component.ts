@@ -7,6 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'recipe-app';
+  loadedFeature: string = 'recipe';
 
-  //TODO: implement lifecycle hooks
+  onNavigate(feature: string){
+    this.loadedFeature = feature;
+  }
 }
