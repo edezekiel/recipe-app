@@ -93,4 +93,8 @@ export class RecipeEditComponent implements OnInit {
     this.recipeService.deleteRecipe(this.id);
     this.router.navigate(['/recipes'])
   }
+
+  onDeleteIngredient(i: number) {
+    this.ingredients.controls.splice(i, 1);
+  }
 }
