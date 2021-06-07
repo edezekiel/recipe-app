@@ -32,4 +32,9 @@ export class ShoppingListService {
   getIngredient(i: number) {
     return this.ingredients[i];
   }
+
+  updateIngredient(i: number, newIngredient: Ingredient) {
+    this.ingredients[i] = newIngredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
 }
