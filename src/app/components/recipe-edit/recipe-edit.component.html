@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <form>
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
       <!-- Form Actions -->
       <div class="row">
         <div class="col-xs-12">
@@ -17,7 +17,8 @@
             <input
               type="text"
               id="name"
-              class="form-control">
+              class="form-control"
+              formControlName="name">
           </div>
         </div>
       </div>
@@ -30,7 +31,8 @@
             <input
               type="text"
               id="imagePath"
-              class="form-control">
+              class="form-control"
+              formControlName="imagePath">
           </div>
         </div>
       </div>
@@ -51,24 +53,32 @@
               type="text"
               id="description"
               rows="6"
-              class="form-control"></textarea> 
+              class="form-control"
+              formControlName="description"></textarea> 
           </div>
         </div>
       </div>
 
       <!-- Ingredients -->
       <div class="row">
-        <div class="col-xs-12">
-          <div class="row">
+        <div 
+          class="col-xs-12"
+          formArrayName="ingredients"
+          *ngFor="let i of ingredients.controls; let idx = index">
+          <div
+            class="row"
+            [formGroupName]="idx">
             <div class="col-xs-8">
               <input
                 type="text"
-                class="form-control">
+                class="form-control"
+                formControlName="name">
             </div>
             <div class="col-xs-2">
               <input
                 type="number"
-                class="form-control">
+                class="form-control"
+                formControlName="amount">
             </div>
             <div class="col-xs-2">
               <button class="btn btn-danger">X</button>
