@@ -1,6 +1,9 @@
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/index';
+import { Subject } from 'rxjs';
 export class RecipeService {
+  recipesChanges = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe('Garlic Herb Focaccia', 'Savory italian-style bread','http://myimperfectkitchen.com/wp-content/uploads/2013/04/0034_foccaia_myimpkitch.jpg', [
       new Ingredient('garlic', 2)
@@ -19,5 +22,15 @@ export class RecipeService {
 
   getRecipe(index: number): Recipe {
     return this.recipes[index];
+  }
+
+  addRecipe(r: Recipe) {
+    this.recipes.push(r);
+    this.recipesChanges.next(this.recipes);
+  }
+
+  updateRecipe(i: number, r: Recipe) {
+    this.recipes[i] = r;
+    this.recipesChanges.next(this.recipes);
   }
 }
