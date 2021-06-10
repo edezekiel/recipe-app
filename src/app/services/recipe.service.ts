@@ -1,9 +1,8 @@
 import { Recipe } from '../models/recipe.model';
-import { Ingredient } from '../models/index';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -56,11 +55,10 @@ export class RecipeService {
   }
 
   fetchRecipes() {
-    this.http.get<Recipe[]>(this.RECIPES_URL)
-      .pipe(map(recipes => this._setRecipeIngredients(recipes)))
-      .subscribe(recipes => {
-        this._setRecipes(recipes);
-      })
+    return this.http.get<Recipe[]>(this.RECIPES_URL)
+      .pipe(
+        map(recipes => this._setRecipeIngredients(recipes)),
+        tap(recipes => this._setRecipes(recipes)))
   }
 
   /* Helper Methods */
