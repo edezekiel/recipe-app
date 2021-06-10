@@ -47,8 +47,23 @@ export class RecipeService {
     this.recipesChanged.next(this.recipes.slice());
   }
 
+  /* HTTP Methods */
   storeRecipes() {
     this.http.put(this.RECIPES_URL, this.recipes)
       .subscribe(data => console.log(data));
+  }
+
+  fetchRecipes() {
+    this.http.get<Recipe[]>(this.RECIPES_URL)
+      .subscribe(data => {
+        console.log(data);
+        this._setRecipes(data);
+      })
+  }
+
+  /* Helper Methods */
+  private _setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
   }
 }

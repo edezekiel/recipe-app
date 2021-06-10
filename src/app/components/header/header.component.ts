@@ -17,4 +17,8 @@ export class HeaderComponent implements OnInit {
   onSaveData() {
     this.recipeService.storeRecipes();
   }
+
+  onFetchData() {
+    this.recipeService.fetchRecipes();
+  }
 }
