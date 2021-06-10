@@ -3,6 +3,7 @@ import { Ingredient } from '../models/index';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,15 +13,16 @@ export class RecipeService {
 
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Garlic Herb Focaccia', 'Savory italian-style bread','http://myimperfectkitchen.com/wp-content/uploads/2013/04/0034_foccaia_myimpkitch.jpg', [
-      new Ingredient('garlic', 2)
-    ]),
-    new Recipe('Cheese Herb Focaccia', 'Savory italian-style bread','http://myimperfectkitchen.com/wp-content/uploads/2013/04/0034_foccaia_myimpkitch.jpg', [
-      new Ingredient('shredded cheddar', 3),
-      new Ingredient('herbs', 10)
-    ])
-  ];
+  private recipes: Recipe[] = [];
+  // private recipes: Recipe[] = [
+  //   new Recipe('Garlic Herb Focaccia', 'Savory italian-style bread','http://myimperfectkitchen.com/wp-content/uploads/2013/04/0034_foccaia_myimpkitch.jpg', [
+  //     new Ingredient('garlic', 2)
+  //   ]),
+  //   new Recipe('Cheese Herb Focaccia', 'Savory italian-style bread','http://myimperfectkitchen.com/wp-content/uploads/2013/04/0034_foccaia_myimpkitch.jpg', [
+  //     new Ingredient('shredded cheddar', 3),
+  //     new Ingredient('herbs', 10)
+  //   ])
+  // ];
 
   constructor(private http: HttpClient) { }
 
@@ -55,9 +57,9 @@ export class RecipeService {
 
   fetchRecipes() {
     this.http.get<Recipe[]>(this.RECIPES_URL)
-      .subscribe(data => {
-        console.log(data);
-        this._setRecipes(data);
+      .pipe(map(recipes => this._setRecipeIngredients(recipes)))
+      .subscribe(recipes => {
+        this._setRecipes(recipes);
       })
   }
 
@@ -65,5 +67,14 @@ export class RecipeService {
   private _setRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
     this.recipesChanged.next(this.recipes.slice());
+  }
+
+  private _setRecipeIngredients(recipes: Recipe[]): Recipe[] {
+    return recipes.map(recipe => {
+      return { 
+        ...recipe,
+        ingredients: recipe.ingredients ? recipe.ingredients : []
+      }
+    });
   }
 }
