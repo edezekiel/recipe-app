@@ -15,7 +15,9 @@ import { DropdownDirective } from './directives/dropdown.directive';
 import { RecipeStartComponent } from './components/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,8 @@ import { AuthComponent } from './auth/auth.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
