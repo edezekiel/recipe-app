@@ -1,7 +1,15 @@
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/index';
 import { Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+@Injectable({
+  providedIn: 'root'
+})
 export class RecipeService {
+  FIREBASE_URL = 'https://ng-complete-guide-15ad4-default-rtdb.firebaseio.com/';
+  RECIPES_URL = `${this.FIREBASE_URL}recipes.json`;
+
   recipesChanged = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
@@ -14,7 +22,7 @@ export class RecipeService {
     ])
   ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getRecipes() {
     return this.recipes.slice();
@@ -37,5 +45,10 @@ export class RecipeService {
   deleteRecipe(i: number) {
     this.recipes.splice(i, 1);
     this.recipesChanged.next(this.recipes.slice());
+  }
+
+  storeRecipes() {
+    this.http.put(this.RECIPES_URL, this.recipes)
+      .subscribe(data => console.log(data));
   }
 }
