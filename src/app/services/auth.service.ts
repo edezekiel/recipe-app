@@ -10,9 +10,6 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth) { }
   
   signup(email: string, password: string) {
-    const signupPromise = this.afAuth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => userCredential)
-      .catch((error) => error);
-    return from(signupPromise);
+    return from(this.afAuth.createUserWithEmailAndPassword(email, password));
   }
 }

@@ -8,7 +8,9 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthComponent {
   isLoginMode = true;
-  
+  isLoading = false;
+  errorMessage: string = '';
+
   constructor(private authService: AuthService) { }
 
   toggleIsLoginMode() {
@@ -16,7 +18,13 @@ export class AuthComponent {
   }
 
   onSubmit(form: NgForm) {
+    if (!form.valid) {
+      return;
+    }
+
     const { email, password } = form.value;
+
+    this.isLoading = true;
 
     this.isLoginMode 
       ? console.log('Logging in') 
@@ -27,10 +35,12 @@ export class AuthComponent {
 
   private _signUp(email: string, password: string) {
     return this.authService.signup(email, password)
-      .subscribe(resData => {
-        console.log(resData)
+      .subscribe(userCredential => {
+        console.log(userCredential);
+        this.isLoading = false;
       }, error => {
-        console.log(error)
+        this.errorMessage = error.message;
+        this.isLoading = false;
       });
   }
 }
