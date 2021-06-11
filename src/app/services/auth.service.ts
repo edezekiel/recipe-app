@@ -1,13 +1,13 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { from, Subject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import firebase from 'firebase/app';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
-  user = new Subject<firebase.User | null>();
+  user = new BehaviorSubject<firebase.User | null>(null);
   errorMessage = new Subject<string>();
   isLoading = new Subject<boolean>();
 
@@ -33,6 +33,7 @@ export class AuthService implements OnInit {
       .catch(error => {
         this.errorMessage.next(error.message);
         this.isLoading.next(false);
-      });
+      }
+    );
   }
 }
