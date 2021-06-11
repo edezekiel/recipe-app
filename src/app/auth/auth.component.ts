@@ -33,7 +33,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   onSubmit(form: NgForm) {
     if (!form.valid) { return; }
-
     const { email, password } = form.value;
     
     this.authService.authenticate(email, password, this.isLoginMode);

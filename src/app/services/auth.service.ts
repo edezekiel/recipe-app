@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { from, Subject, Observable } from 'rxjs';
 import firebase from 'firebase/app';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,24 +11,28 @@ export class AuthService implements OnInit {
   errorMessage = new Subject<string>();
   isLoading = new Subject<boolean>();
 
-  constructor(private afAuth: AngularFireAuth) { }
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router
+    ) { }
   
   ngOnInit() { }
 
   authenticate(email: string, password: string, isLoginMode: boolean) {
-    let authObs: Observable<any>;
     this.isLoading.next(true)
 
-    authObs = isLoginMode
-      ? from(this.afAuth.signInWithEmailAndPassword(email, password))
-      : from(this.afAuth.createUserWithEmailAndPassword(email, password));
+    const promise = isLoginMode
+      ? this.afAuth.signInWithEmailAndPassword(email, password)
+      : this.afAuth.createUserWithEmailAndPassword(email, password);
 
-    authObs.subscribe(userCredential => {
-      this.user.next(userCredential.user);
-      this.isLoading.next(false)
-      console.log(this.user);
-    }, error => {
-      this.errorMessage.next(error.message);
-    });
+    promise.then(userCredential => {
+        this.user.next(userCredential.user);
+        this.isLoading.next(false);
+        this.router.navigate(['/recipes']);
+      })
+      .catch(error => {
+        this.errorMessage.next(error.message);
+        this.isLoading.next(false);
+      });
   }
 }

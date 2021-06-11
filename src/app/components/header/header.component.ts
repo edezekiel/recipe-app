@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -6,12 +8,21 @@ import { RecipeService } from 'src/app/services/recipe.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   collapsed = true;
+  isAuthenticated = false;
 
-  constructor(private recipeService: RecipeService) { }
+  private userSub: Subscription;
+
+  constructor(
+    private recipeService: RecipeService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+        this.isAuthenticated = !!user;
+    });
   }
 
   onSaveData() {
@@ -20,5 +31,9 @@ export class HeaderComponent implements OnInit {
 
   onFetchData() {
     this.recipeService.fetchRecipes().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
   }
 }
