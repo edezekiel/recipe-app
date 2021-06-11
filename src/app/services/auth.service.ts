@@ -15,7 +15,8 @@ export class AuthService implements OnInit {
   token = new BehaviorSubject<string>('');
   errorMessage = new Subject<string>();
   isLoading = new Subject<boolean>();
-
+  private tokenExpirationTimer: any;
+  
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router
@@ -46,6 +47,12 @@ export class AuthService implements OnInit {
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userToken');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
   }
 
   autoLogin() {
@@ -57,7 +64,14 @@ export class AuthService implements OnInit {
     } else {
       this.user.next(JSON.parse(userData));
       this.token.next(JSON.parse(userToken));
+      this.autoLogout(300 * 1000);
     }
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration)
   }
 
   _getUserToken() {
@@ -65,6 +79,7 @@ export class AuthService implements OnInit {
       this._user.getIdToken(true).then(token => {
         this.token.next(token);
         localStorage.setItem('userToken', JSON.stringify(token));
+        this.autoLogout(300 * 1000);
         this.isLoading.next(false);
         this.router.navigate(['/recipes']);
       });
