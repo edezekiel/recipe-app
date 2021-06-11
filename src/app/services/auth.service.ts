@@ -3,8 +3,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject, BehaviorSubject } from 'rxjs';
 import firebase from 'firebase/app';
 import { Router } from '@angular/router';
-import { take, exhaustMap } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
