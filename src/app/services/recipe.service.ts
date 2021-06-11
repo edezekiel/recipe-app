@@ -1,8 +1,9 @@
 import { Recipe } from '../models/recipe.model';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, take, tap, exhaustMap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +24,10 @@ export class RecipeService {
   //   ])
   // ];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
   getRecipes() {
     return this.recipes.slice();
@@ -55,10 +59,16 @@ export class RecipeService {
   }
 
   fetchRecipes() {
-    return this.http.get<Recipe[]>(this.RECIPES_URL)
-      .pipe(
-        map(recipes => this._setRecipeIngredients(recipes)),
-        tap(recipes => this._setRecipes(recipes)))
+    return this.authService.user.pipe(take(1), exhaustMap(user => {
+
+      return this.http.get<Recipe[]>(this.RECIPES_URL, {
+        params: new HttpParams().set('auth', 'token')
+      })
+        .pipe(
+          map(recipes => this._setRecipeIngredients(recipes)),
+          tap(recipes => this._setRecipes(recipes)))
+      })
+    );
   }
 
   /* Helper Methods */
