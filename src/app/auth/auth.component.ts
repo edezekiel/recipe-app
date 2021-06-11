@@ -27,14 +27,25 @@ export class AuthComponent {
     this.isLoading = true;
 
     this.isLoginMode 
-      ? console.log('Logging in') 
+      ? this._signIn(email, password)
       : this._signUp(email, password);
 
     form.reset();
   }
 
   private _signUp(email: string, password: string) {
-    return this.authService.signup(email, password)
+    return this.authService.signUp(email, password)
+      .subscribe(userCredential => {
+        console.log(userCredential);
+        this.isLoading = false;
+      }, error => {
+        this.errorMessage = error.message;
+        this.isLoading = false;
+      });
+  }
+
+  private _signIn(email: string, password: string) {
+    return this.authService.signIn(email, password)
       .subscribe(userCredential => {
         console.log(userCredential);
         this.isLoading = false;
