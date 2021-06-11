@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -16,8 +16,8 @@ import { RecipeStartComponent } from './components/recipe-start/recipe-start.com
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,11 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
