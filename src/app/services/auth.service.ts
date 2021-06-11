@@ -42,6 +42,11 @@ export class AuthService implements OnInit {
     );
   }
 
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
+  }
+
   _getUserToken() {
     if (this._user) {
       this._user.getIdToken(true).then(token => {
