@@ -33,6 +33,7 @@ export class AuthService implements OnInit {
     promise.then(userCredential => {
         this.user.next(userCredential.user);
         this._user = userCredential.user;
+        localStorage.setItem('userData', JSON.stringify(this._user));
         this._getUserToken();
       })
       .catch(error => {
@@ -47,11 +48,23 @@ export class AuthService implements OnInit {
     this.router.navigate(['/auth']);
   }
 
+  autoLogin() {
+    const userData = localStorage.getItem('userData');
+    const userToken = localStorage.getItem('userToken');
+
+    if (!userData || !userToken) {
+      return;
+    } else {
+      this.user.next(JSON.parse(userData));
+      this.token.next(JSON.parse(userToken));
+    }
+  }
+
   _getUserToken() {
     if (this._user) {
       this._user.getIdToken(true).then(token => {
-        console.log('_getUserToken = ', token);
         this.token.next(token);
+        localStorage.setItem('userToken', JSON.stringify(token));
         this.isLoading.next(false);
         this.router.navigate(['/recipes']);
       });
