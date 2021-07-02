@@ -3,9 +3,7 @@
     <div *ngIf="user">
       Logged in: {{ user.email }}
     </div>
-    <div class="alert alert-danger" *ngIf="errorMessage">
-      <p>Error: {{ errorMessage }}</p>
-    </div>
+    <app-alert [message]="errorMessage" *ngIf="errorMessage"></app-alert>
     <div *ngIf="isLoading">
       Loading...
     </div>

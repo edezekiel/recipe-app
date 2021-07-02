@@ -18,6 +18,7 @@ import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AlertComponent } from './components/alert/alert.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     RecipeBookComponent,
     RecipeStartComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
