@@ -4,50 +4,39 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ShoppingListComponent } from './components/shopping-list/shopping-list.component';
-import { ShoppingListEditComponent } from './components/shopping-list-edit/shopping-list-edit.component';
-import { RecipeListComponent } from './components/recipe-list/recipe-list.component';
-import { RecipeItemComponent } from './components/recipe-item/recipe-item.component';
-import { RecipeDetailComponent } from './components/recipe-detail/recipe-detail.component';
-import { RecipeBookComponent } from './components/recipe-book/recipe-book.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownDirective } from './directives/dropdown.directive';
-import { RecipeStartComponent } from './components/recipe-start/recipe-start.component';
-import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
-import { AlertComponent } from './components/alert/alert.component';
+import { RecipesModule } from './modules/recipes/recipes.module';
+import { ShoppingListModule } from './modules/shopping-list/shopping-list.module';
+import { SharedModule } from './modules/shared/shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
-    DropdownDirective,
     HeaderComponent,
-    ShoppingListComponent,
-    ShoppingListEditComponent,
-    RecipeListComponent,
-    RecipeItemComponent,
-    RecipeDetailComponent,
-    RecipeBookComponent,
-    RecipeStartComponent,
-    RecipeEditComponent,
     AuthComponent,
-    AlertComponent
   ],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    RecipesModule,
+    ShoppingListModule,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

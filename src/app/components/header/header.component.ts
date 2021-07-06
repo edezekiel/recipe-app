@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { RecipeService } from 'src/app/services/recipe.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { RecipeService } from 'src/app/modules/recipes/recipe.service';
 
 @Component({
   selector: 'app-header',

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from './auth.service';
 import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app';
 
