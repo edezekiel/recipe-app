@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from '../app-routing.module';
+import { RecipesRoutingModule } from './recipes.router.module';
 import { RecipeListComponent } from './components/recipe-list/recipe-list.component';
 import { RecipeItemComponent } from './components/recipe-item/recipe-item.component';
 import { RecipeDetailComponent } from './components/recipe-detail/recipe-detail.component';
@@ -10,12 +10,6 @@ import { RecipeStartComponent } from './components/recipe-start/recipe-start.com
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
   declarations: [
     RecipeListComponent,
     RecipeItemComponent,
@@ -23,6 +17,12 @@ import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.compon
     RecipeBookComponent,
     RecipeStartComponent,
     RecipeEditComponent
+  ],
+  imports: [
+    CommonModule,
+    RecipesRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     RecipeListComponent,
