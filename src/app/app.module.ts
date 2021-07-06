@@ -5,25 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownDirective } from './directives/dropdown.directive';
 import { AuthComponent } from './auth/auth.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
-import { AlertComponent } from './components/alert/alert.component';
 import { RecipesModule } from './modules/recipes/recipes.module';
 import { ShoppingListModule } from './modules/shopping-list/shopping-list.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DropdownDirective,
     HeaderComponent,
     AuthComponent,
-    AlertComponent,
   ],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
